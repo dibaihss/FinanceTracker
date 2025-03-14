@@ -9,8 +9,8 @@ import {
     Animated,
     Modal,
 } from "react-native";
-import { COLORS, DATA, FONTS, SIZES } from "../constants";
-import NFTCard from "../components/NFTCard";
+import { COLORS, DATA, FONTS, SIZES, DUMMYEXPENSES } from "../constants";
+import RenderExpense from "../components/RenderExpense";
 import { StatusBar } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 
@@ -18,14 +18,25 @@ import AddFixedExpDia from "../Dialogs/AddFixedExpDia";
 import FAB from "../components/CustomFAB";
 
 const Home = () => {
-    const [nftsData, setNftsData] = useState(DATA);
-    const [newFixedExp, setFixedExp] = useState("");
+    const [nftsData, setNftsData] = useState(DUMMYEXPENSES);
     const [isDialogVisible, setIsDialogVisible] = useState(false);
 
     const handleAddExpense = (expense) => {
-        console.log('New expense:', expense);
-        // Add your logic here to save the expense
+        const newId = (nftsData.length + 1).toString();
+    
+        // Create new expense object
+        const newExpense = {
+            id: newId,
+            title: expense.title,
+            amount: expense.amount,
+            category: expense.category,
+            date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+            icon: "cash"
+        };
+
+        setNftsData([...nftsData, newExpense])
     };
+    
     const moveSearchAnimation = useRef(new Animated.Value(0)).current;
 
     /**
@@ -71,15 +82,6 @@ const Home = () => {
                         }}
                     >
 
-                        {/* <TextInput
-                                    placeholder="Search by NFT name"
-                                    placeholderTextColor={COLORS.white}
-                                    style={{ flex: 1, color: COLORS.white, marginLeft: 10, padding: 8, marginVertical: 10 }}
-                                    onChangeText={setFixedExp}
-                                    value={newFixedExp}
-                                    keyboardType="default"
-                                 
-                                  /> */}
                         {/* <HomeHeader searchHandler={searchHandler} /> */}
                     </Animated.View>
                     {!nftsData.length ? (
@@ -87,7 +89,7 @@ const Home = () => {
                     ) : (
                         <FlashList
                             data={nftsData}
-                            renderItem={({ item }) => <NFTCard NFTData={item} />}
+                            renderItem={({ item }) => <RenderExpense FixedExpense={item} />}
                             keyExtractor={(item) => item.id}
                             estimatedItemSize={200}
                         />
@@ -98,9 +100,7 @@ const Home = () => {
                 </View>
 
             </TouchableWithoutFeedback>
-            <AddFixedExpDia visible={isDialogVisible} onClose={() => {
-                setIsDialogVisible(false);
-            }} />
+            <AddFixedExpDia visible={isDialogVisible} onClose={() => setIsDialogVisible(false)} onAdd={handleAddExpense} />
         </SafeAreaView>
     );
 };

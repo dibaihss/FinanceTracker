@@ -13,6 +13,7 @@ export const COLORS = {
   white: "#FFF",
   black: "#000",
   gray: "#ddd",
+  cancel: 'rgb(255 82 82)',
 };
 export const FONTS = {
   bold: "InterBold",

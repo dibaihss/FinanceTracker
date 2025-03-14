@@ -1,10 +1,30 @@
 // SimpleDialog.js
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, Modal, TouchableOpacity, StyleSheet, Pressable, TextInput } from 'react-native';
 import { COLORS, DATA, FONTS, SIZES } from "../constants";
 
-const AddFixedExpDia = ({ visible, onClose }) => {
+const AddFixedExpDia = ({ visible, onClose, onAdd }) => {
 
+  const [title, setTitle] = useState('');
+  const [amount, setAmount] = useState('');
+  const [category, setCategory] = useState('');
+
+  const handleAdd = () => {
+    if (title && amount && category) {
+      onAdd({
+        title,
+        amount: parseFloat(amount),
+        category,
+      });
+      setTitle('');
+      setAmount('');
+      setCategory('');
+      onClose();
+    } else {
+      throw console.error("complete the dialog");
+
+    }
+  };
 
   return (
 
@@ -21,28 +41,41 @@ const AddFixedExpDia = ({ visible, onClose }) => {
               placeholder="Title"
               placeholderTextColor={COLORS.gray}
               style={styles.Input}
-              onChangeText={() => { }}
+              value={title}
+              onChangeText={setTitle}
             />
 
             <TextInput
               placeholder="Amount"
               placeholderTextColor={COLORS.gray}
+              keyboardType="decimal-pad"
               style={styles.Input}
-              onChangeText={() => { }}
+              value={amount}
+              onChangeText={setAmount}
             />
 
             <TextInput
               placeholder="Category"
               placeholderTextColor={COLORS.gray}
               style={styles.Input}
-              onChangeText={() => { }}
+              value={category}
+              onChangeText={setCategory}
             />
           </View>
-          <Pressable
-            style={[styles.button]}
-            onPress={onClose}>
-            <Text style={styles.textButton}>Hide Modal</Text>
-          </Pressable>
+          <View style={styles.ButtonContainer}>
+
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: COLORS.cancel }]}
+              onPress={onClose}>
+              <Text style={styles.textButton}>CLOSE</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.button]}
+              onPress={handleAdd}>
+              <Text style={styles.textButton}>ADD</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </View>
     </Modal>
@@ -90,10 +123,17 @@ const styles = StyleSheet.create({
     borderRadius: SIZES.small,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
+  ButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%',
+    paddingHorizontal: SIZES.small,
+    gap: SIZES.small
+  },
   button: {
     backgroundColor: COLORS.second,
     padding: SIZES.small + 5,
-    width: '80%', // Relative to parent
+    width: '50%', // Relative to parent
     maxWidth: 300, // Maximum width
     alignItems: "center",
     borderRadius: SIZES.medium,
@@ -102,8 +142,9 @@ const styles = StyleSheet.create({
   textButton: {
     color: COLORS.white,
     fontFamily: FONTS.semiBold,
-    fontSize: SIZES.medium,
+    fontSize: SIZES.small,
   },
+
   mainText: {
     fontFamily: FONTS.bold,
     fontSize: SIZES.large + 5,

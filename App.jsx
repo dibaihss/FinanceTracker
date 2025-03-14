@@ -6,8 +6,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Welcome from "./screens/Welcome";
 import FixedExpenses from "./screens/FixedExpenses";
 import { COLORS, FONTS, SIZES } from "./constants";
+import BudgetOverview from "./screens/BudgetOverview";
+// import BudgetOverview from "./screens/extra";
 
-import Home from "./screens/Home";
 // import NFTDetails from "./screens/NFTDetails";
 const App = () => {
   const [fontLoaded] = useFonts({
@@ -26,13 +27,12 @@ const App = () => {
       <StatusBar style="light" animated={true} />
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="FixedExpenses"
+          initialRouteName="BudgetOverview"
           screenOptions={{
             headerShown: false,
           }}
         >
           <Stack.Screen name="Welcome" component={Welcome} />
-          <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="FixedExpenses" component={FixedExpenses} options={{
             title: "Fixed Expenses",
             headerShown: true,
@@ -47,7 +47,18 @@ const App = () => {
               color: COLORS.white,
             },
           }} />
-
+          <Stack.Screen
+            name="BudgetOverview"
+            component={BudgetOverview}
+            options={{
+              title: "Budget Overview",
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: COLORS.bg,
+              },
+              headerTintColor: COLORS.white,
+            }}
+          />
 
           {/* <Stack.Screen name="NFT-details" component={NFTDetails} />  */}
         </Stack.Navigator>
