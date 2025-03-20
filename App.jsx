@@ -7,6 +7,8 @@ import Welcome from "./screens/Welcome";
 import FixedExpenses from "./screens/FixedExpenses";
 import { COLORS, FONTS, SIZES } from "./constants";
 import BudgetOverview from "./screens/BudgetOverview";
+import Excise from "./screens/Excise";
+import Exercise2 from "./screens/Exercise2";
 // import BudgetOverview from "./screens/extra";
 
 // import NFTDetails from "./screens/NFTDetails";
@@ -27,7 +29,7 @@ const App = () => {
       <StatusBar style="light" animated={true} />
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="BudgetOverview"
+          initialRouteName="Excise"
           screenOptions={{
             headerShown: false,
           }}
@@ -58,8 +60,12 @@ const App = () => {
               },
               headerTintColor: COLORS.white,
             }}
+          
           />
-
+            <Stack.Screen
+            name="Excise"
+            component={Exercise2}
+           />
           {/* <Stack.Screen name="NFT-details" component={NFTDetails} />  */}
         </Stack.Navigator>
       </NavigationContainer>
